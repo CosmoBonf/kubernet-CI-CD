@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: kubernet-ci-cd
+
+commonLabels:
+  app.kubernetes.io/name: kubernet-ci-cd
+  app.kubernetes.io/part-of: kubernet-ci-cd
+
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml
+  - hpa.yaml
+
