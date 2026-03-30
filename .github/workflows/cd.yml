@@ -53,7 +53,9 @@ jobs:
   deploy:
     needs: [build-and-push]
     runs-on: ubuntu-latest
-    if: ${{ secrets.KUBE_CONFIG_DATA != '' }}
+    env:
+      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+    if: ${{ env.KUBE_CONFIG_DATA != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -66,9 +68,6 @@ jobs:
         run: |
           mkdir -p "$HOME/.kube"
           echo "${KUBE_CONFIG_DATA}" | base64 -d > "$HOME/.kube/config"
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
 
       - name: Apply manifests
         run: kubectl apply -k k8s/overlays/prod
-
